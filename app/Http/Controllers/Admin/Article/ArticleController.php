@@ -26,7 +26,7 @@ class ArticleController extends BaseController
     public function index()
     {	
     	$data = Article::orderBy('add_time','desc')->paginate(10);
-    	return view('admin.article.article_index')->with('data',$data);
+    	return view('admin.article.article.index')->with('data',$data);
     }
     
     /**显示添加页面
@@ -37,7 +37,7 @@ class ArticleController extends BaseController
     	$list = Category::all();
     	$cateModel = new Category();
     	$cateList = $cateModel->getLevel($list);
-    	return view('admin.article.article_add',['list' => $cateList]);
+    	return view('admin.article.article.add',['list' => $cateList]);
     }
     
     /**
@@ -66,7 +66,7 @@ class ArticleController extends BaseController
 		 $result = $articleModel->save();
     	 if($result)
     	 {
-	    	$body = ['content' => $content,'article_id' => $articleModel->article_id];
+	    	$body = ['content' => $content,'article_id' => $articleModel->id];
     	 	ArticleBody::create($body);
 	    	return ['status' => 0];
     	 }
@@ -75,19 +75,19 @@ class ArticleController extends BaseController
     
     
     
-    public function edit($article_id)
+    public function edit($id)
     {	
     	$list = Category::all();
     	$cateModel = new Category();
     	$cateList = $cateModel->getLevel($list);
     	
-    	$result = Article::find($article_id);
-    	$body = ArticleBody::where('article_id',$article_id)->first();
-    	return view('admin.article.article_edit',['list' => $cateList,'result' => $result,'article_id' => $article_id,'body' => $body]);
+    	$result = Article::find($id);
+    	$body = ArticleBody::where('id',$id)->first();
+    	return view('admin.article.article.edit',['list' => $cateList,'result' => $result,'id' => $id,'body' => $body]);
     }
     
     //
-    public function update($article_id)
+    public function update($id)
     {
     	 $data = Input::except('_method','_token');
     	 $content = $data['content'];
@@ -98,21 +98,21 @@ class ArticleController extends BaseController
 		 {
 		 	return ['status' => 1,'msg' =>'请选择栏目'];
 		 }
-		 $result = Article::where('article_id',$article_id)->update($data);
+		 $result = Article::where('id',$id)->update($data);
     	 if($result !==false)
     	 {
 	    	$body = ['content' => $content];
-	    	ArticleBody::where('article_id',$article_id)->update($body);
+	    	ArticleBody::where('article_id',$id)->update($body);
 	    	return ['status' => 0];
     	 }
     	 return ['status' => 1,'msg' => '修改文章失败'];
     }
     
     //
-    public function destroy($article_id)
+    public function destroy($id)
     {
-    	$count = Article::where('article_id',$article_id)->delete();
-    	ArticleBody::where('article_id',$article_id)->delete();
+    	$count = Article::where('id',$id)->delete();
+    	ArticleBody::where('id',$id)->delete();
     	return ['status' => 0];
     }
 }

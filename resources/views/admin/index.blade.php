@@ -25,7 +25,37 @@
   <ul>
     <li><a href="{{url('admin/category')}}" target="right"><span class="icon-caret-right"></span>栏目管理</a></li>
     <li><a href="{{url('admin/article')}}" target="right"><span class="icon-caret-right"></span>文章管理</a></li>
+  </ul> 
+   <h2><span class="icon-pencil-square-o"></span>商品管理</h2>
+  <ul>
+    <li><a href="{{url('admin/brand')}}" target="right"><span class="icon-caret-right"></span>品牌管理</a></li>
+    <li><a href="{{url('admin/cat')}}" target="right"><span class="icon-caret-right"></span>栏目管理</a></li>
+   <li><a href="{{url('admin/goodstype')}}" target="right"><span class="icon-caret-right"></span>商品类型</a></li>
+    <li><a href="{{url('admin/attr')}}" target="right"><span class="icon-caret-right"></span>商品属性</a></li>
+     <li><a href="{{url('admin/spec')}}" target="right"><span class="icon-caret-right"></span>商品规格</a></li>
+      <li><a href="{{url('admin/goods')}}" target="right"><span class="icon-caret-right"></span>商品管理</a></li>
   </ul>  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </div>
 <script type="text/javascript">
 $(function(){

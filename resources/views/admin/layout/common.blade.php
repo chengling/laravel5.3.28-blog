@@ -11,6 +11,7 @@
     <script src="/assets/admin/js/jquery.js"></script>
     <script src="/assets/admin/js/pintuer.js"></script>
     <script src="/assets/admin/js/layer/layer.js"></script>  
+    <script src="/assets/admin/js/admin.js"></script>
 </head>
 @yield('content')
 </html>

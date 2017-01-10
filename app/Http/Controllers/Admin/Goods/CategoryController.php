@@ -1,16 +1,17 @@
 <?php
 /**
- * @desc 文章分类处理
+ * @desc 商品分类处理
  * @author chenling
  * @package 
  * @since : 2016-12-22下午5:25:46
  * @final : 2016-12-22下午5:25:46
  */
-namespace App\Http\Controllers\Admin\Article;
+namespace App\Http\Controllers\Admin\Goods;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\BaseController;
-use App\Http\Model\Article\Category;
+use App\Http\Model\Article\Category as ArticleCat;
+use App\Http\Model\Goods\Category;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 class CategoryController extends BaseController
@@ -25,19 +26,19 @@ class CategoryController extends BaseController
     public function index()
     {
     	$data['list'] = Category::all();
-    	$cateModel = new Category();
+    	$cateModel = new ArticleCat();
     	$tree = $cateModel->getTree($data['list']);
     	$data['tree'] = json_encode($tree);
-    	return view('admin.article.category.index')->with('data',$data);
+    	return view('admin.goods.category.index')->with('data',$data);
     }
     
     //
     public function create()
     {	
     	$list = Category::all();
-    	$cateModel = new Category();
+    	$cateModel = new ArticleCat();
     	$cateList = $cateModel->getLevel($list);
-    	return view('admin.article.category.add',['list' => $cateList]);
+    	return view('admin.goods.category.add',['list' => $cateList]);
     }
     
     //
@@ -76,11 +77,11 @@ class CategoryController extends BaseController
     public function edit($id)
     {	
     	$list = Category::all();
-    	$cateModel = new Category();
+    	$cateModel = new ArticleCat();
     	$cateList = $cateModel->getLevel($list);
     	
     	$result = Category::find($id);
-    	return view('admin.article.category.edit',['list' => $cateList,'result' => $result,'id' => $id]);
+    	return view('admin.goods.category.edit',['list' => $cateList,'result' => $result,'id' => $id]);
     }
     
     //

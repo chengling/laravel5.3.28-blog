@@ -36,4 +36,11 @@ Route::group(['middleware' => ['web','check.login']],function(){
 		Route::resource('/admin/link', 'Admin\Site\LinkController');
 		Route::resource('/admin/ad', 'Admin\Site\AdController');
 		
+		Route::resource('/admin/brand', 'Admin\Goods\BrandController');
+		Route::resource('/admin/cat', 'Admin\Goods\CategoryController');
+		Route::resource('/admin/attr', 'Admin\Goods\AttrController');
+		Route::resource('/admin/goodstype', 'Admin\Goods\TypeController');
+		Route::resource('/admin/spec', 'Admin\Goods\SpecController');
+		Route::resource('/admin/goods', 'Admin\Goods\GoodsController');
+		
 });

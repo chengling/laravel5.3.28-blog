@@ -1,19 +1,7 @@
 <?php
-
-namespace App\Http\Model\Article;
-
-use Illuminate\Database\Eloquent\Model;
-
-class Category extends Model
+namespace  App\Http\Lib;
+class Category
 {
-	protected   $table='article_cat';
-	
-	protected  $primaryKey='id';
-	
-	public  $timestamps=false;
-	
-	protected $guarded=[];
-	
 	/**
 	 * @desc得到树状结构的tree
 	 * @access
