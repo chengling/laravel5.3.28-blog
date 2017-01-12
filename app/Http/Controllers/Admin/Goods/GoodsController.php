@@ -14,10 +14,13 @@ use App\Http\Model\Goods\Type;
 use App\Http\Model\Goods\Attr;
 use App\Http\Model\Goods\Spec;
 use App\Http\Model\Goods\SpecItem;
+use App\Http\Model\Goods\Image;
+use App\Http\Model\Goods\Content;
 use App\Http\Model\Goods\Brand;
 use App\Http\Model\Goods\Category;
 use App\Http\Lib\Category as LibCat;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Http\Request;
 class GoodsController extends BaseController
 {
     
@@ -30,16 +33,22 @@ class GoodsController extends BaseController
     public function index()
     {	
     	$data = Goods::orderBy('id','desc')->paginate(10);
-    	$list = Type::all()->toArray();
-		
-    	$typeList = array();
-    	foreach($list as $key => $value)
+    	$bList = Brand::all()->toArray();
+		$cList = Category::all()->toArray();
+    	$brandList = [];
+    	$catList= [];
+    	foreach($bList as $key => $value)
     	{
-    		$typeList[$value['id']] = $value['name'];
+    		$brandList[$value['id']] = $value['name'];
+    	}
+    	foreach($cList as $key => $value)
+    	{
+    		$catList[$value['id']] = $value['name'];
     	}
     	foreach($data as $key => $value)
     	{
-    		$value['type_name'] = $typeList[$value['type_id']];
+    		$value['cat_name'] = $catList[$value['cat_id']];
+    		$value['brand_name'] = $brandList[$value['brand_id']];
     		$data[$key] = $value;
     	}
     	return view('admin.goods.goods.index')->with('data',$data);
@@ -50,14 +59,14 @@ class GoodsController extends BaseController
     */
     public function create()
     {	
-    	$list = Type::all();
+    	$typeList = Type::all();
     	
     	$list = Category::all();
     	$libCat = new LibCat();
     	$catList = $libCat->getLevel($list);
     	
     	$brandList = Brand::all();
-    	return view('admin.goods.goods.add',['list' => $list,'catList' => $catList,'brandList' => $brandList]);
+    	return view('admin.goods.goods.add',['typeList' => $typeList,'catList' => $catList,'brandList' => $brandList]);
     }
     
     /**
@@ -66,15 +75,48 @@ class GoodsController extends BaseController
     * @param
     * @return
     */
-    public function store()
+    public function store(Request $request)
     {	
-    	 $data = Input::except('_method','_token');
-		 $result = Goods::create($data);    	 
-    	 if($result)
-    	 {
+    	$goods = $request->get('goods');
+    	if(!$goods['name'] || !$goods['goods_type'] || !$goods['brand_id']||!$goods['cat_id'])
+    	{
+    		return ['status' =>1,'msg' =>'输入信息不完整'];
+    	}
+    	$goodsModel = new Goods();
+    	foreach($goods as $key => $value)
+    	{
+    		$goodsModel->$key = $value;
+    	} 
+    	$result = $goodsModel->save();
+    	
+    	$pictures =$request->get('pictures');
+    	if($pictures && is_array($pictures))
+    	{
+    		foreach($pictures as $pic)
+    		{
+    			$imageModel = new Image();
+    			$imageModel->url = $pic;
+    			$imageModel->goods_id = $goodsModel->id;
+    			$imageModel->save();
+    		}
+    	}
+    	$content = $request->get('content');
+    	if($content)
+    	{
+    		$contentModel = new Content();
+    		foreach($content as $key => $value)
+    		{
+    			$contentModel->$key = $value;
+    		}
+    		$contentModel->goods_id = $goodsModel->id;
+    		$contentModel->save();
+    		
+    	}
+    	if($result)
+    	{
 	    	return ['status' => 0];
-    	 }
-    	 return ['status' => 1,'msg' => '添加分类失败'];
+    	}
+    	return ['status' => 1,'msg' => '添加商品失败'];
     }
     
     
@@ -84,7 +126,17 @@ class GoodsController extends BaseController
     	
     	$result = Goods::find($id);
     	$list = Type::all();
-    	return view('admin.goods.goods.edit',['result' => $result,'id' => $id,'list' => $list]);
+    	
+    	$typeList = Type::all();
+    	 
+    	$list = Category::all();
+    	$libCat = new LibCat();
+    	$catList = $libCat->getLevel($list);
+    	 
+    	$brandList = Brand::all();
+    	$content= Content::where('goods_id','=',$id)->first();
+    	$pictures = Image::where('goods_id','=',$id)->get();
+    	return view('admin.goods.goods.edit',['result' => $result,'id' => $id,'typeList' => $typeList,'catList' => $catList,'brandList' => $brandList,'content' => $content,'pictures'=>$pictures]);
     }
     
     //
@@ -104,6 +156,8 @@ class GoodsController extends BaseController
     public function destroy($id)
     {
     	$count = Goods::where('id',$id)->delete();
+    	Image::where('goods_id','=',$id)->delete();
+    	Content::where('goods_id','=',$id)->delete();
     	return ['status' => 0];
     }
 }

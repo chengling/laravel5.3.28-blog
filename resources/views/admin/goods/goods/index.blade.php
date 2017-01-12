@@ -15,8 +15,10 @@
       <tr>
         <th width="100" style="text-align:left; padding-left:20px;">ID</th>
         <th width="10%">排序</th>
-        <th>属性名称</th>
-        <th>商品类型</th>
+        <th>商品名称</th>
+        <th>商品分类</th>
+        <th>商品品牌</th>
+        <th>库存</th>
         <th width="310">操作</th>
       </tr>
       	@foreach($data as $value)
@@ -24,8 +26,10 @@
           <td style="text-align:left; padding-left:20px;"><input type="checkbox" name="id[]" value="" />{{$value->id}}</td>
           <td>{{$value->sort_order}}</td>
           <td><font color="#00CC99">{{$value->name}}</font></td>
-          <td>{{$value['type_name']}}</td>
-          <td><div class="button-group"> <a class="button border-main" href="{{url('admin/attr/'.$value['id'].'/edit')}}"><span class="icon-edit"></span> 修改</a> <a class="button border-red" href="javascript:void(0)" onclick="return del_row('{{$value->id}}')"><span class="icon-trash-o"></span> 删除</a> </div></td>
+          <td>{{$value['cat_name']}}</td>
+          <td>{{$value['brand_name']}}</td>
+          <td>{{$value->store_count}}</td>
+          <td><div class="button-group"> <a class="button border-main" href="{{url('admin/goods/'.$value['id'].'/edit')}}"><span class="icon-edit"></span> 修改</a> <a class="button border-red" href="javascript:void(0)" onclick="return del_row('{{$value->id}}')"><span class="icon-trash-o"></span> 删除</a> </div></td>
         </tr>
         @endforeach
       <tr>
@@ -39,7 +43,7 @@
 <<script type="text/javascript">
 function del_row(id)
 {
-	var url = "{{url('admin/attr')}}"+'/'+id;
+	var url = "{{url('admin/goods')}}"+'/'+id;
 	del(url);
 }
 </script>

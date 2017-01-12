@@ -44,3 +44,6 @@ Route::group(['middleware' => ['web','check.login']],function(){
 		Route::resource('/admin/goods', 'Admin\Goods\GoodsController');
 		
 });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

@@ -1,30 +1,55 @@
 @extends('admin.layout.common')
 @section('content')
 <body>
+<script type="text/javascript" src="/assets/admin/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="/assets/admin/js/ueditor/ueditor.all.js"></script>
+<script src="/assets/js/uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="/assets/js/uploadify/uploadify.css">
 <div class="panel admin-panel margin-top">
-  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>修改属性</strong></div>
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>添加商品</strong></div>
   <div class="body-content">
-     <form method="post" class="form-x" id="form">
-     
-      <div class="form-group">
+	  <ul class="panel-nav">
+	  	<li><a href="javascript:;" data-toggle="tongyong">通用信息</a></li>
+	  	<li><a href="javascript:;" data-toggle="description">商品描述</a></li>
+	  	<li><a href="javascript:;" data-toggle="goodspicture">商品相册</a></li>
+	  	<li><a href="javascript:;" data-toggle="spec">商品规格</a></li>
+	  	<li><a href="javascript:;" data-toggle="attr">商品属性</a></li>
+	  </ul>
+    <form method="post" class="form-x" id="form">
+    <div id="tongyong">
+    
+     <div class="form-group">
         <div class="label">
-          <label>所属商品类型：</label>
+          <label>所属商品分类：</label>
         </div>
         <div class="field">
-          <select name="type_id" class="input w50">
-            <option value="0">顶级类型</option>
-            @foreach($list as $value)
-            <option value="{{$value['id']}}" @if($value->id==$result->type_id) selected @endif >{{$value['name']}}</option>
+          <select name="goods[cat_id]" class="input w50">
+            <option value="0">选择商品分类</option>
+            @foreach($catList as $value)
+            <option value="{{$value['id']}}" @if($value->id==$result->cat_id) selected @endif>{{$value['name']}}</option>
+            @endforeach
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>所属商品品牌：</label>
+        </div>
+        <div class="field">
+          <select name="goods[brand_id]" class="input w50">
+            <option value="0">选择品牌</option>
+            @foreach($brandList as $value)
+            <option value="{{$value['id']}}" @if($value->id==$result->brand_id) selected @endif>{{$value['name']}}</option>
             @endforeach
           </select>
         </div>
       </div>
      <div class="form-group">
         <div class="label">
-          <label>属性名称：</label>
+          <label>商品名称：</label>
         </div>
         <div class="field">
-          <input type="text" class="input w50"  name="name" data-validate="required:请输入标题" value="{{$result->name}}" />
+          <input type="text" class="input w50"  name="goods[name]" data-validate="required:请输入标题" value="{{$result->name}}"/>
           <div class="tips"></div>
         </div>
       </div>
@@ -35,19 +60,157 @@
           <label>排序：</label>
         </div>
         <div class="field">
-          <input type="text" class="input w50" name="sort_order" value="{{$result->sort_order}}"  data-validate="number:排序必须为数字" />
+          <input type="text" class="input w50" name="goods[sort_order]" value="{{$result->sort_order}}"  data-validate="number:排序必须为数字" />
           <div class="tips"></div>
         </div>
       </div>
-     <div class="form-group">
+        <div class="form-group">
         <div class="label">
-          <label>是否需要检索：</label>
+          <label>销售价：</label>
         </div>
-        <div class="field"> 
-          <input type="radio" name="attr_index" value="0" @if($result->attr_index=='0') checked @endif />否
-          <input type="radio" name="attr_index" value="1" @if($result->attr_index=='1') checked @endif />关键字检索
-          <input type="radio" name="attr_index" value="2" @if($result->attr_index=='2') checked @endif />范围检索
+        <div class="field">
+          <input type="text" class="input w50"  name="goods[shop_price]" data-validate="required:请输入标题"  value="{{$result->shop_price}}"/>
+          
           <div class="tips"></div>
+        </div>
+      </div>
+        <div class="form-group">
+        <div class="label">
+          <label>市场价：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50"  name="goods[market_price]" data-validate="required:请输入标题" value="{{$result->market_price}}"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+       <div class="form-group">
+        <div class="label">
+          <label>成本价：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50"  name="goods[cost_price]" data-validate="required:请输入标题" value="{{$result->cost_price}}"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+       <div class="form-group">
+        <div class="label">
+          <label>佣金：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50"  name="goods[commission]" data-validate="required:请输入标题" value="{{$result->commission}}"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+        <div class="form-group">
+        <div class="label">
+          <label>商品关键词：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50"  name="goods[keywords]" data-validate="required:请输入标题" value="{{$result->keywords}}"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+        <div class="form-group">
+        <div class="label">
+          <label>商品简介：</label>
+        </div>
+        <div class="field">
+          <textarea rows="5" cols="5" name="goods[brief]">{{$result->brief}}</textarea>
+          <div class="tips"></div>
+        </div>
+      </div>
+        <div class="form-group">
+        <div class="label">
+          <label>库存：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50"  name="goods[store_count]"  value="{{$result->store_count}}"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+        <div class="form-group">
+        <div class="label">
+          <label>是否包邮：</label>
+        </div>
+        <div class="field">
+			<input type="radio" name="goods[is_free_shipping]" value="0"  @if($result->is_free_shipping=='0') checked @endif />否
+            <input type="radio" name="goods[is_free_shipping]" value="1"  @if($result->is_free_shipping=='1') checked @endif />是                 <div class="tips"></div>
+        </div>
+      </div>
+        <div class="form-group">
+        <div class="label">
+          <label>是否实物：</label>
+        </div>
+        <div class="field">
+ 			<input type="radio" name="goods[is_real]" value="0" @if($result->is_real=='0') checked @endif/>否
+            <input type="radio" name="goods[is_real]" value="1"  @if($result->is_real=='1') checked @endif/>是       
+             <div class="tips"></div>
+        </div>
+      </div>
+       <div class="form-group">
+        <div class="label">
+          <label>商品图片：</label>
+        </div>
+        <div class="field">
+          <input type="text" id="original_img" name="goods[original_img]" class="input tips" style="width:25%; float:left;"   readonly="readonly"  value="{{$result->original_img}}"/>
+          <input id="file_upload" type="file"  value="" style="float:left;">
+         
+          <div id="picture">
+          </div>
+        </div>
+      </div>   
+      </div>  
+      <div id="description" style="display: none">
+      	  <div class="form-group">
+	        <div class="label">
+	          <label>商品详细描述：</label>
+	        </div>
+	        <div class="field">
+	         <script id="container" name="content[content]" type="text/plain">{{$content->content}}</script>
+	          <div class="tips"></div>
+	        </div>
+      	</div>
+      	
+      	 <div class="form-group">
+	        <div class="label">
+	          <label>wap商品详细描述：</label>
+	        </div>
+	        <div class="field" >
+	         <script id="wap_container" name="content[wap_content]" type="text/plain">{{$content->wap_content}}
+    	  </script>
+	          <div class="tips"></div>
+	        </div>
+      	</div>
+      	
+      </div>
+      <div id="goodspicture" style="display: none">
+      	   <div class="form-group">
+		        <div class="label">
+		          <label>商品相册：</label>
+		        </div>
+		        <div class="field">
+		          <input id="wap_upload" type="file"  value="" style="float:left;">
+		         
+		          <div id="wap_picture">
+			          @foreach($pictures as $value)
+			          <div class="upload-picture"><img width="100" height="100" src="{{$value->url}}"><input type="hidden" name="pictures[]" value="{{$value->url}}"><a href="javascript:void(0)" onclick="clearPicture(this);">删除</a></div>
+			          @endforeach
+		          </div>
+		        </div>	
+     	 </div>   
+      	
+      </div>
+      <div id="spec" style="display: none">
+      	  <div class="label">
+          <label>所属商品类型：</label>
+        </div>
+        <div class="field">
+          <select name="goods[goods_type]" class="input w50" onchange="ajaxSpec()">
+            <option value="0">选择</option>
+            @foreach($typeList as $value)
+            <option value="{{$value['id']}}">{{$value['name']}}</option>
+            @endforeach
+          </select>
         </div>
       </div>
       <div class="form-group">
@@ -55,16 +218,54 @@
           <label></label>
         </div>
         <div class="field">
-          <button class="button bg-main icon-check-square-o" type="button" id="edit-submit"> 提交</button>
+          <button class="button bg-main icon-check-square-o" type="button" id="submit"> 提交</button>
         </div>
       </div>
-      <input type="hidden" name="_method" value="put">
+      <input type="hidden" name="_method" value="post">
        {{csrf_field()}}
     </form>
   </div>
 </div>
 </body>
 <script>
-edit("{{url('admin/attr/'.$id)}}","{{url('admin/attr')}}");
+upload("original_img");
+add("{{url('admin/goods')}}");
+var ue = UE.getEditor('container');
+var wap_ue = UE.getEditor('wap_container');
+jQuery(".panel-nav li a").each(function(index){
+	$(this).on('click',function(){
+		var _attr = $(this).attr('data-toggle');
+		jQuery(".panel-nav li a").each(function(){
+			var attr = $(this).attr('data-toggle');
+			if(attr == _attr)
+			{
+				$("#"+attr).css({'display':'block'});
+			}else{
+				$("#"+attr).css({'display':'none'});
+			}
+		});
+	});
+});
+$('#wap_upload').uploadify({
+	'fileSizeLimit':'2MB',
+	'multi': true,
+	'buttonText':'上传图片',
+	'swf'      : '/assets/js/uploadify/uploadify.swf',
+	'uploader' : "/upload",
+	'onUploadSuccess' : function(file, data, response) {
+		 	var data = eval('(' + data + ')');
+			$("#wap_picture").append('<div class="upload-picture"><img width="100" height="100" src="'+data.path+'" /><input type="hidden" name="pictures[]" value="'+data.path+'"><a href="javascript:void(0)" onclick="clearPicture(this);">删除</a></div>');
+			
+	 }
+});
+function clearPicture(obj)
+{	
+	$(obj).parent().remove();
+}
+
+function ajaxSpec()
+{
+
+}
 </script>
 @endsection

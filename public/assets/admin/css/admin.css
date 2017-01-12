@@ -121,3 +121,7 @@ ul.panel-nav li a{
 ul.panel-nav li a:hover{
 	color:black;
 }
+.upload-picture{
+	display: inline-block;
+	margin: 10px;
+}
