@@ -1,76 +1,100 @@
-@extends('layouts.app')
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>用户登录</title>
+	<link rel="stylesheet" href="/assets/shop/css/base.css" />
+	<link rel="stylesheet" href="/assets/shop/css/global.css" />
+	<link rel="stylesheet" href="/assets/shop/css/login-register.css" />
+</head>
+<body>
+	<div class="header wrap1000">
+		<a href=""><img src="/assets/shop/images/logo.png" alt="" /></a>
+	</div>
+	
+	<div class="main">
+		<div class="login-form fr">
+			<div class="form-hd">
+				<h3>用户注册</h3>
+			</div>
+			<div class="form-bd">
+				<form action="" method="POST">
+					<dl>
+						<dt>用户名</dt>
+						<dd><input type="text" name="name" class="text" /></dd>
+					</dl>
+					<dl>
+						<dt>密码</dt>
+						<dd><input type="password" name="password" class="text"/></dd>
+					</dl>
+					<dl>
+						<dt>确认密码</dt>
+						<dd><input type="password" name="password_confirmation" class="text"/></dd>
+					</dl>
+					<dl>
+						<dt>验证码</dt>
+						<dd><input type="text" name="code" class="text" size="10" style="width:58px;"> <img src="{{url('/code')}}" alt="" align="absmiddle" style="position:relative;top:-2px;" id="img"/> <a href="javascript:;" onclick="$('#img').attr('src',$('#img').attr('src')+'?')" style="color:#999;">看不清，换一张</a></dd>
+					</dl>
+					<dl>
+						<dt>&nbsp;</dt>
+						<dd><input type="button" value="立即注册" class="submit" id="submit"/> <input type= "checkbox" checked="checked"/>阅读并同意<a href="" class="forget">服务协议</a></dd>
+					</dl>
+					<input type="hidden" name="_method" value="post">
+				</form>
+				
+			</div>
+			<div class="form-ft">
+			
+			</div>		
+		</div>
+		
+		<div class="login-form-left fl">
+			<dl class="func clearfix">
+				<dt>注册之后您可以</dt>
+				<dd class="ico05"><i></i>购买商品支付订单</dd>
+				<dd class="ico01"><i></i>申请开店销售商品</dd>
+				<dd class="ico03"><i></i>空间好友推送分享</dd>
+				<dd class="ico02"><i></i>收藏商品关注店铺</dd>
+				<dd class="ico06"><i></i>商品资讯服务评价</dd>
+				<dd class="ico04"><i></i>安全交易诚信无忧</dd>
+			</dl>
+			
+			<div class="if">
+				<h2>如果您是本站用户</h2>
+				<p>我已经注册过账号，立即 <a href="" class="register">登录</a> 或是 <a href="" class="findpwd">找回密码？</a></p>
+			</div>
+		</div>
+	</div>
+	
+	<div class="footer clear wrap1000">
+		<p> <a href="">首页</a> | <a href="">招聘英才</a> | <a href="">广告合作</a> | <a href="">关于ShopCZ</a> | <a href="">联系我们</a></p>
+		<p>Copyright 2004-2013 itcast Inc.,All rights reserved.</p>
+	</div>
+	
+<script  src="/assets/shop/js/jquery-2.1.1.min.js"></script>
+<script  src="/assets/shop/js/layer/layer.js"></script>
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Name</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Register
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+<script>
+$("#submit").bind('click',function(){
+	$.ajax({
+			dataType:'json',
+			type :'post',
+			data :$('form').serialize(),
+			url:"{{url('register')}}",
+			success:function(data)
+			{
+				if(data.status!='0')
+				{
+					layer.open({
+						  title:'提示',content: data.msg
+				    });
+				}else
+				{
+					location.href='{{url('/login')}}';
+					}
+			}
+		});
+});
+</script>
+</body>
+</html>

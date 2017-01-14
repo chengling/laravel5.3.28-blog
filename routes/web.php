@@ -19,8 +19,7 @@ Route::group(['middleware' => ['web']],function(){
 	Route::any('/admin/login', 'Admin\LoginController@login');
 	Route::any('/admin/toLogin', 'Admin\LoginController@toLogin');
 	Route::any('/admin/logout', 'Admin\LoginController@logout');
-	Route::any('/admin/login/code', 'Admin\LoginController@code');
-	
+	Route::any('/code', 'CommController@code');
 });
 
 Route::group(['middleware' => ['web','check.login']],function(){

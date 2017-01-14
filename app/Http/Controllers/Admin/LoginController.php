@@ -26,10 +26,6 @@ class LoginController extends BaseController
 		return view('admin/login/login');
 	}
 	
-	public function test()
-	{
-		return redirect('admin/login');
-	}
 	
 	public function toLogin(Request $request)
 	{	
@@ -62,9 +58,4 @@ class LoginController extends BaseController
 	}
 	
 	
-	
-	public function  code(){
-		$code = new Code();
-		$code->code();
-	}
 }
